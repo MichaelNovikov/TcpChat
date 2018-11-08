@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,17 @@ using Xamarin.Forms;
 
 namespace TcpChat
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : ContentPage, IConfirmNavigation 
     {
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new ClientViewModel() { Navigation = this.Navigation };
+            //BindingContext = new ClientViewModel() { Navigation = this.Navigation };
+        }
+
+        public bool CanNavigate(INavigationParameters parameters)
+        {
+            return true;
         }
     }
 }

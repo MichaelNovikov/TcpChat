@@ -1,37 +1,44 @@
-﻿using System.ComponentModel;
+﻿using Plugin.LocalNotifications;
+using Prism.AppModel;
+using Prism.Navigation;
+using System.ComponentModel;
 using System.Windows.Input;
 using TcpChat.Model;
-using TcpChat.View;
 using Xamarin.Forms;
 
 namespace TcpChat.ViewModel
 {
-    public class ClientViewModel : INotifyPropertyChanged
+    public class ClientViewModel : INotifyPropertyChanged, IApplicationLifecycleAware
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         TcpChatClient _tcpClient;
-        public INavigation Navigation { get; set; }
+        public INavigationService NavigationService { get; set; }
         public ICommand EnterToChatCommand { protected set; get; }
         public ICommand SendMessageCommand { protected set; get; }
         public ICommand LeaveChatCommand { protected set; get; }
         public string Name { get; set; }
         public string InputMessage { get; set; }
         public string OutputMessage { get; set; }
+        private string CurrentMessge { get; set; }
 
-        public ClientViewModel()
+
+        public ClientViewModel(INavigationService navigationServe)
         {
+            NavigationService = navigationServe;
             _tcpClient = new TcpChatClient();
-            _tcpClient.ReceivedMessageEvent += (a) => { InputMessage += a + "\n"; OnPropertyChanged("InputMessage"); };
+            _tcpClient.ReceivedMessageEvent += (a) => { InputMessage += a + "\n"; OnPropertyChanged("InputMessage"); CurrentMessge = a; };
             EnterToChatCommand = new Command(EnterToChat);
             SendMessageCommand = new Command(SendMessage);
             LeaveChatCommand = new Command(LeaveChat);
         }
 
-        private void EnterToChat()
+        private async void EnterToChat()
         {
             _tcpClient.StartClient(Name);
-            Navigation.PushAsync(new ChatRoomPage(this));
+            var parameter = new NavigationParameters();
+            parameter.Add("Param", this);
+            await NavigationService.NavigateAsync("ChatRoomPage", parameter);
         }
 
         private void SendMessage()
@@ -40,7 +47,7 @@ namespace TcpChat.ViewModel
             OutputMessage = "";
         }
 
-        private void LeaveChat()
+        private async void LeaveChat()
         {
             _tcpClient.SendMessage("278_01close");
             Name = InputMessage = OutputMessage = "";
@@ -48,13 +55,27 @@ namespace TcpChat.ViewModel
             OnPropertyChanged("Name");
             OnPropertyChanged("InputMessage");
             OnPropertyChanged("OutputMessage");
-            Navigation.PopAsync();
+            await NavigationService.GoBackAsync();
         }
 
+        private void Notificate()
+        {
+
+        }
 
         protected void OnPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public void OnResume()
+        {
+            CrossLocalNotifications.Current.Show("title", "OnResume");
+        }
+
+        public void OnSleep()
+        {
+            CrossLocalNotifications.Current.Show("title", "OnSleep");
         }
     }
 }
