@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TcpChat.View.ChatRoomPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Button x:Name="btnClose"
+                        Text="Leave chat"
+                        HeightRequest="40"
+                        HorizontalOptions="StartAndExpand"
+                        BackgroundColor="DeepPink"
+                        Command="{Binding LeaveChatCommand}"/>
+            <Label x:Name="roomLabel"
+                       BackgroundColor="Aqua"
+                       HeightRequest="480"
+                       Text="{Binding InputMessage, Mode=TwoWay}"/>
+            <StackLayout Orientation="Horizontal">
+                <Entry x:Name="entryTxt"
+                       Placeholder="Text"
+                       HorizontalOptions="StartAndExpand"
+                       WidthRequest="300"
+                       Text="{Binding OutputMessage, Mode=TwoWay}"/>
+                <Button x:Name="btnSend"
+                        Text="Send"
+                        HorizontalOptions="EndAndExpand"
+                        BackgroundColor="Orange"
+                        Command="{Binding SendMessageCommand}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
