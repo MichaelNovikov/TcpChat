@@ -33,11 +33,9 @@ namespace TcpChat
             containerRegistry.RegisterForNavigation<ChatRoomPage>();
         }
 
-
-
         protected override void OnStart()
         {
-            base.OnStart();
+          
             // Handle when your app starts
         }
 

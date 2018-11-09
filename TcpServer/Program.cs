@@ -95,8 +95,10 @@ namespace TcpServer
                 var stream = item.Key.GetStream();
                 var writer = new StreamWriter(stream);
 
-                writer.WriteLine(message);
-                writer.Flush();
+
+                    writer.WriteLine(message);
+                    writer.Flush();
+                
             }
         }
 

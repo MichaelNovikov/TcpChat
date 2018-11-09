@@ -1,6 +1,7 @@
 ﻿using Plugin.LocalNotifications;
 using Prism.AppModel;
 using Prism.Navigation;
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using TcpChat.Model;
@@ -20,14 +21,13 @@ namespace TcpChat.ViewModel
         public string Name { get; set; }
         public string InputMessage { get; set; }
         public string OutputMessage { get; set; }
-        private string CurrentMessge { get; set; }
-
+        private bool onSleep = false;
 
         public ClientViewModel(INavigationService navigationServe)
         {
             NavigationService = navigationServe;
             _tcpClient = new TcpChatClient();
-            _tcpClient.ReceivedMessageEvent += (a) => { InputMessage += a + "\n"; OnPropertyChanged("InputMessage"); CurrentMessge = a; };
+            _tcpClient.ReceivedMessageEvent += (a) => { InputMessage += a + "\n"; OnPropertyChanged("InputMessage"); Notificate(a); };
             EnterToChatCommand = new Command(EnterToChat);
             SendMessageCommand = new Command(SendMessage);
             LeaveChatCommand = new Command(LeaveChat);
@@ -58,9 +58,10 @@ namespace TcpChat.ViewModel
             await NavigationService.GoBackAsync();
         }
 
-        private void Notificate()
+        private void Notificate(string message)
         {
-
+            if (onSleep)
+                CrossLocalNotifications.Current.Show(DateTime.Now.ToShortTimeString(), message, 1);
         }
 
         protected void OnPropertyChanged(string propName)
@@ -70,12 +71,13 @@ namespace TcpChat.ViewModel
 
         public void OnResume()
         {
-            CrossLocalNotifications.Current.Show("title", "OnResume");
+            CrossLocalNotifications.Current.Cancel(1);
+            onSleep = false;
         }
 
         public void OnSleep()
         {
-            CrossLocalNotifications.Current.Show("title", "OnSleep");
+            onSleep = true;
         }
     }
 }

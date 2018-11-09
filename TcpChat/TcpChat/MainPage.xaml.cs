@@ -14,7 +14,6 @@ namespace TcpChat
         public MainPage()
         {
             InitializeComponent();
-            //BindingContext = new ClientViewModel() { Navigation = this.Navigation };
         }
 
         public bool CanNavigate(INavigationParameters parameters)
