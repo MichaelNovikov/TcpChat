@@ -28,9 +28,8 @@ namespace TcpChat
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, ClientViewModel>();
             containerRegistry.RegisterForNavigation<ChatRoomPage>();
+            containerRegistry.RegisterForNavigation<MainPage, ClientViewModel>();
         }
 
         protected override void OnStart()

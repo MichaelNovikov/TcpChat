@@ -25,7 +25,7 @@ namespace TcpChat.Model
                         if (text == "278_01close")
                             _client.Close();
                         else
-                            ReceivedMessageEvent.Invoke(text);
+                            ReceivedMessageEvent(text);
                     }
                 }
             });
@@ -42,7 +42,6 @@ namespace TcpChat.Model
             Task.Run(() =>
             {
                 _client = new TcpClient();
-
                 _client.Connect("192.168.1.147", 50);
 
                 var stream = _client.GetStream();

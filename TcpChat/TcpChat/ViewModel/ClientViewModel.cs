@@ -18,7 +18,7 @@ namespace TcpChat.ViewModel
         public ICommand EnterToChatCommand { protected set; get; }
         public ICommand SendMessageCommand { protected set; get; }
         public ICommand LeaveChatCommand { protected set; get; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public string InputMessage { get; set; }
         public string OutputMessage { get; set; }
         private bool onSleep = false;
@@ -35,6 +35,8 @@ namespace TcpChat.ViewModel
 
         private async void EnterToChat()
         {
+            if (Name == "")
+                return;
             _tcpClient.StartClient(Name);
             var parameter = new NavigationParameters();
             parameter.Add("Param", this);

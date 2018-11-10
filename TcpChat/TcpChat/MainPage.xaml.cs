@@ -14,11 +14,13 @@ namespace TcpChat
         public MainPage()
         {
             InitializeComponent();
+            entryName.Text = "";
         }
 
         public bool CanNavigate(INavigationParameters parameters)
         {
             return true;
         }
+
     }
 }
