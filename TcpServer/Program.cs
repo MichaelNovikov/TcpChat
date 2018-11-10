@@ -10,7 +10,7 @@ namespace TcpServer
     class Program
     {
         private static ConcurrentDictionary<TcpClient, string> _clients = new ConcurrentDictionary<TcpClient, string>();
-        private static TcpListener server = new TcpListener(new IPEndPoint(IPAddress.Any, 50));
+        private static TcpListener server = new TcpListener(new IPEndPoint(IPAddress.Any, 1777));
 
         public void StartTcpListener()
         {

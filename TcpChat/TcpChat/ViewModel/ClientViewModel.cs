@@ -1,9 +1,9 @@
-﻿using Plugin.LocalNotifications;
-using Prism.AppModel;
+﻿using Prism.AppModel;
 using Prism.Navigation;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using TcpChat.DependencyServices.Notifications;
 using TcpChat.Model;
 using Xamarin.Forms;
 
@@ -63,7 +63,10 @@ namespace TcpChat.ViewModel
         private void Notificate(string message)
         {
             if (onSleep)
-                CrossLocalNotifications.Current.Show(DateTime.Now.ToShortTimeString(), message, 1);
+            {
+                DependencyService.Get<INotificationCreater>().CreateNotification(message);
+            }
+                //CrossLocalNotifications.Current.Show(DateTime.Now.ToShortTimeString(), message, 1);
         }
 
         protected void OnPropertyChanged(string propName)
@@ -73,7 +76,7 @@ namespace TcpChat.ViewModel
 
         public void OnResume()
         {
-            CrossLocalNotifications.Current.Cancel(1);
+            //CrossLocalNotifications.Current.Cancel(1);
             onSleep = false;
         }
 

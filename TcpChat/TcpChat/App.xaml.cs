@@ -34,7 +34,7 @@ namespace TcpChat
 
         protected override void OnStart()
         {
-          
+            base.OnStart();
             // Handle when your app starts
         }
 
