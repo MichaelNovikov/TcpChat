@@ -42,7 +42,7 @@ namespace TcpChat.Model
             Task.Run(() =>
             {
                 _client = new TcpClient();
-                _client.Connect("192.168.56.1", 1777);
+                _client.Connect("10.1.134.34", 1777);
 
                 var stream = _client.GetStream();
                 _reader = new StreamReader(stream);

@@ -10,15 +10,24 @@ namespace TcpChat.iOS
     {
         public void CancelAllNotifications()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void CreateNotification(string message)
         {
-            UILocalNotification notification = new UILocalNotification();
-            NSDate.FromTimeIntervalSinceNow(15);
-            notification.AlertAction = DateTime.Now.ToShortTimeString();
-            notification.AlertBody = message;
+            //UILocalNotification notification = new UILocalNotification();
+            //notification.FireDate = NSDate.FromTimeIntervalSinceNow(15);
+            //notification.AlertAction = DateTime.Now.ToShortTimeString();
+            //notification.AlertBody = message;
+            //notification.ApplicationIconBadgeNumber = 1;
+            //UIApplication.SharedApplication.ScheduleLocalNotification(notification);
+
+            var notification = new UILocalNotification();
+            notification.FireDate = NSDate.FromTimeIntervalSinceNow(5);
+            notification.AlertAction = "Test";
+            notification.AlertBody = "Test Text";
+            notification.ApplicationIconBadgeNumber = 1;
+            notification.SoundName = UILocalNotification.DefaultSoundName;
             UIApplication.SharedApplication.ScheduleLocalNotification(notification);
         }
     }

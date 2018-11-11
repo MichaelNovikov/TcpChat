@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
 using Prism;
 using Prism.Ioc;
 using UIKit;
-using UserNotifications;
 
 namespace TcpChat.iOS
 {
@@ -28,31 +24,51 @@ namespace TcpChat.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App(new iOSInitializer()));
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
             {
-                // Ask the user for permission to get notifications on iOS 10.0+
-                UNUserNotificationCenter.Current.RequestAuthorization(
-                        UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
-                        (approved, error) => { });
-            }
-            else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            {
-                // Ask the user for permission to get notifications on iOS 8.0+
-                var settings = UIUserNotificationSettings.GetSettingsForTypes(
-                        UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound,
-                        new NSSet());
+                var notificationSettings = UIUserNotificationSettings.GetSettingsForTypes(
+                    UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, null
+                );
 
-                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+                UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
             }
 
-            return base.FinishedLaunching(app, options);
+            if (options != null)
+            {
+                // check for a local notification
+                if (options.ContainsKey(UIApplication.LaunchOptionsLocalNotificationKey))
+                {
+                    var localNotification = options[UIApplication.LaunchOptionsLocalNotificationKey] as UILocalNotification;
+                    if (localNotification != null)
+                    {
+                        UIAlertController okayAlertController = UIAlertController.Create(localNotification.AlertAction, localNotification.AlertBody, UIAlertControllerStyle.Alert);
+                        okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+
+                        Window.RootViewController.PresentViewController(okayAlertController, true, null);
+
+                        // reset our badge
+                        UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        {
+            UIAlertView alert = new UIAlertView() { Title = notification.AlertAction, Message = notification.AlertBody };
+            alert.AddButton("OK");
+            alert.Show();
+            // CLEAR BADGES
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
         }
 
         public class iOSInitializer : IPlatformInitializer
         {
             public void RegisterTypes(IContainerRegistry containerRegistry)
             {
-               
+
             }
         }
     }

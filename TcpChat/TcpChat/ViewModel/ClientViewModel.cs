@@ -61,6 +61,7 @@ namespace TcpChat.ViewModel
 
         private void Notificate(string message)
         {
+            DependencyService.Get<INotificationCreater>().CreateNotification(message);
             if (onSleep)
             {
                 DependencyService.Get<INotificationCreater>().CreateNotification(message);
@@ -74,6 +75,7 @@ namespace TcpChat.ViewModel
 
         public void OnResume()
         {
+            if(onSleep)
             DependencyService.Get<INotificationCreater>().CancelAllNotifications();
             onSleep = false;
         }

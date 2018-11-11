@@ -6,8 +6,9 @@
         <StackLayout>
             <Button x:Name="btnClose"
                         Text="Leave chat"
-                        HeightRequest="40"
-                        HorizontalOptions="StartAndExpand"
+                        Margin="0,25,0,0"
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Start"
                         Command="{Binding LeaveChatCommand}"/>
             <Label x:Name="roomLabel"
                        BackgroundColor="Aqua"
@@ -16,12 +17,11 @@
             <StackLayout Orientation="Horizontal">
                 <Entry x:Name="entryTxt"
                        Placeholder="Text"
-                       HorizontalOptions="StartAndExpand"
-                       WidthRequest="300"
+                       HorizontalOptions="FillAndExpand"
                        Text="{Binding OutputMessage, Mode=TwoWay}"/>
                 <Button x:Name="btnSend"
                         Text="Send"
-                        HorizontalOptions="EndAndExpand"
+                        HorizontalOptions="End"
                         BackgroundColor="Orange"
                         Command="{Binding SendMessageCommand}"/>
             </StackLayout>
