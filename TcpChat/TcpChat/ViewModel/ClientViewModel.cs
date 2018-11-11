@@ -66,7 +66,6 @@ namespace TcpChat.ViewModel
             {
                 DependencyService.Get<INotificationCreater>().CreateNotification(message);
             }
-                //CrossLocalNotifications.Current.Show(DateTime.Now.ToShortTimeString(), message, 1);
         }
 
         protected void OnPropertyChanged(string propName)
