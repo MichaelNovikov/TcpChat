@@ -1,6 +1,5 @@
 ﻿using Prism.AppModel;
 using Prism.Navigation;
-using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using TcpChat.DependencyServices.Notifications;

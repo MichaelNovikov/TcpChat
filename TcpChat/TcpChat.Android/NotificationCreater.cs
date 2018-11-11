@@ -41,6 +41,5 @@ namespace TcpChat.Droid
             NotificationManager notificationManager = (NotificationManager)Application.Context.GetSystemService(Context.NotificationService);
             notificationManager.CancelAll();
         }
-
     }
 }
