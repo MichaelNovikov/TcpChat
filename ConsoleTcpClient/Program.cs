@@ -34,7 +34,7 @@ namespace ConsoleTcpClient
             Random random = new Random();
 
             _client = new TcpClient();
-            _client.Connect("10.1.134.34", 1777);
+            _client.Connect("192.168.238.1", 1777);
             var stream = _client.GetStream();
             _reader = new StreamReader(stream);
             _writer = new StreamWriter(stream);

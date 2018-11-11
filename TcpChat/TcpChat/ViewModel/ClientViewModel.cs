@@ -75,7 +75,7 @@ namespace TcpChat.ViewModel
 
         public void OnResume()
         {
-            //CrossLocalNotifications.Current.Cancel(1);
+            DependencyService.Get<INotificationCreater>().CancelAllNotifications();
             onSleep = false;
         }
 

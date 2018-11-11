@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
+using Android.Graphics;
 using Android.Support.V4.App;
-using Android.Views;
-using Android.Widget;
+using System;
 using TcpChat.DependencyServices.Notifications;
 
 [assembly: Xamarin.Forms.Dependency(typeof(TcpChat.Droid.NotificationCreater))]
@@ -19,19 +12,35 @@ namespace TcpChat.Droid
     {
         public void CreateNotification(string message)
         {
-            int messageId = 1001;
+            var random = new Random();
+            int messageId = random.Next(0, 1000);
             var intent = new Intent(Application.Context, typeof(MainActivity));
-            var pending = PendingIntent.GetActivity(Application.Context, 0, intent, PendingIntentFlags.CancelCurrent);
+            var pending = PendingIntent.GetActivity(Application.Context, random.Next(0, 1000), intent, PendingIntentFlags.CancelCurrent);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Application.Context, "channelId")
                 .SetAutoCancel(true)
                 .SetContentTitle(DateTime.Now.ToShortTimeString())
+                .SetContentText(message)
                 .SetContentIntent(pending)
-                .SetSmallIcon(Resource.Drawable.chatting)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(message));
+                .SetCategory(Notification.CategoryMessage)
+                .SetPriority((int)NotificationPriority.High)
+                .SetSmallIcon(Resource.Drawable.chattingSmall)
+                .SetLargeIcon(BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.chattingBig))
+                .SetStyle(new NotificationCompat.BigPictureStyle().BigPicture(BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.MCHorizontal)));
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
+            {
+                builder.SetVisibility(1);
+            }
 
             NotificationManager notificationManager = (NotificationManager)Application.Context.GetSystemService(Context.NotificationService);
             notificationManager.Notify(messageId, builder.Build());
         }
+
+        public void CancelAllNotifications()
+        {
+            NotificationManager notificationManager = (NotificationManager)Application.Context.GetSystemService(Context.NotificationService);
+            notificationManager.CancelAll();
+        }
+
     }
 }

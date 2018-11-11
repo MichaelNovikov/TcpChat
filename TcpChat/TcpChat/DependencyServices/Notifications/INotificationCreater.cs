@@ -3,5 +3,6 @@
     public interface INotificationCreater
     {
         void CreateNotification(string message);
+        void CancelAllNotifications();
     }
 }
