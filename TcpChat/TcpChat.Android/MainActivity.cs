@@ -1,5 +1,5 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Prism;
@@ -10,10 +10,14 @@ namespace TcpChat.Droid
     [Activity(LaunchMode = LaunchMode.SingleTop, Label = "TcpChat", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        private string PREF_NAME = "Name";
+        public static ISharedPreferences _settings;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            _settings = Application.Context.GetSharedPreferences(PREF_NAME, FileCreationMode.Private);
 
             base.OnCreate(savedInstanceState);
             CreateNotificationChannel();

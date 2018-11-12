@@ -2,6 +2,7 @@
 using Prism.Navigation;
 using System.ComponentModel;
 using System.Windows.Input;
+using TcpChat.DependencyServices.Defaults;
 using TcpChat.DependencyServices.Notifications;
 using TcpChat.Model;
 using Xamarin.Forms;
@@ -17,7 +18,7 @@ namespace TcpChat.ViewModel
         public ICommand EnterToChatCommand { protected set; get; }
         public ICommand SendMessageCommand { protected set; get; }
         public ICommand LeaveChatCommand { protected set; get; }
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = DependencyService.Get<IDefaults>().GetUserName();
         public string InputMessage { get; set; }
         public string OutputMessage { get; set; }
         private bool onSleep = false;
@@ -36,7 +37,9 @@ namespace TcpChat.ViewModel
         {
             if (Name == "")
                 return;
+            DependencyService.Get<IDefaults>().SaveUserName(Name);
             _tcpClient.StartClient(Name);
+            Name = "";
             var parameter = new NavigationParameters();
             parameter.Add("Param", this);
             await NavigationService.NavigateAsync("ChatRoomPage", parameter);
@@ -51,8 +54,7 @@ namespace TcpChat.ViewModel
         private async void LeaveChat()
         {
             _tcpClient.SendMessage("278_01close");
-            Name = InputMessage = OutputMessage = "";
-
+            InputMessage = OutputMessage = "";
             OnPropertyChanged("Name");
             OnPropertyChanged("InputMessage");
             OnPropertyChanged("OutputMessage");
@@ -60,8 +62,7 @@ namespace TcpChat.ViewModel
         }
 
         private void Notificate(string message)
-        {
-            DependencyService.Get<INotificationCreater>().CreateNotification(message);
+        {   
             if (onSleep)
             {
                 DependencyService.Get<INotificationCreater>().CreateNotification(message);
@@ -75,7 +76,7 @@ namespace TcpChat.ViewModel
 
         public void OnResume()
         {
-            if(onSleep)
+            if (onSleep)
             DependencyService.Get<INotificationCreater>().CancelAllNotifications();
             onSleep = false;
         }

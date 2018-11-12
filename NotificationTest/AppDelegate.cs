@@ -1,4 +1,6 @@
 ﻿using Foundation;
+using System;
+using System.Threading;
 using UIKit;
 
 namespace NotificationTest
@@ -62,6 +64,9 @@ namespace NotificationTest
 
         public override void DidEnterBackground(UIApplication application)
         {
+            nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { while (true) { Thread.Sleep(3000); Method(); } });
+            //UIApplication.SharedApplication.EndBackgroundTask(taskID);
+
             // Use this method to release shared resources, save user data, invalidate timers and store the application state.
             // If your application supports background exection this method is called instead of WillTerminate when the user quits.
         }
@@ -81,6 +86,17 @@ namespace NotificationTest
         public override void WillTerminate(UIApplication application)
         {
             // Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
+        }
+
+        private void Method()
+        {
+            var notification = new UILocalNotification();
+            notification.FireDate = NSDate.FromTimeIntervalSinceNow(1);
+            notification.AlertAction = "Test";
+            notification.AlertBody = "Test Text";
+            notification.ApplicationIconBadgeNumber = 1;
+            notification.SoundName = UILocalNotification.DefaultSoundName;
+            UIApplication.SharedApplication.ScheduleLocalNotification(notification);
         }
     }
 }

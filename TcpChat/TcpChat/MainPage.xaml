@@ -6,7 +6,8 @@
 
     <StackLayout
         HorizontalOptions="Center"
-        VerticalOptions="Center">
+        VerticalOptions="Center"
+        BackgroundColor="Transparent">
         <!-- Place new controls here -->
         <Entry x:Name="entryName"
                Placeholder="Name"

@@ -33,35 +33,35 @@ namespace TcpChat.iOS
                 UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
             }
 
-            if (options != null)
-            {
-                // check for a local notification
-                if (options.ContainsKey(UIApplication.LaunchOptionsLocalNotificationKey))
-                {
-                    var localNotification = options[UIApplication.LaunchOptionsLocalNotificationKey] as UILocalNotification;
-                    if (localNotification != null)
-                    {
-                        UIAlertController okayAlertController = UIAlertController.Create(localNotification.AlertAction, localNotification.AlertBody, UIAlertControllerStyle.Alert);
-                        okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+            //if (options != null)
+            //{
+            //    // check for a local notification
+            //    if (options.ContainsKey(UIApplication.LaunchOptionsLocalNotificationKey))
+            //    {
+            //        var localNotification = options[UIApplication.LaunchOptionsLocalNotificationKey] as UILocalNotification;
+            //        if (localNotification != null)
+            //        {
+            //            UIAlertController okayAlertController = UIAlertController.Create(localNotification.AlertAction, localNotification.AlertBody, UIAlertControllerStyle.Alert);
+            //            okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
 
-                        Window.RootViewController.PresentViewController(okayAlertController, true, null);
+            //            Window.RootViewController.PresentViewController(okayAlertController, true, null);
 
-                        // reset our badge
-                        UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
-                    }
-                }
-            }
+            //            reset our badge
+            //            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+            //        }
+            //    }
+            //}
 
-            return true;
+            return base.FinishedLaunching(app, options);
         }
 
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
-            UIAlertView alert = new UIAlertView() { Title = notification.AlertAction, Message = notification.AlertBody };
-            alert.AddButton("OK");
-            alert.Show();
-            // CLEAR BADGES
-            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+            //UIAlertView alert = new UIAlertView() { Title = notification.AlertAction, Message = notification.AlertBody };
+            //alert.AddButton("OK");
+            //alert.Show();
+            //// CLEAR BADGES
+            //UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
         }
 
         public class iOSInitializer : IPlatformInitializer
