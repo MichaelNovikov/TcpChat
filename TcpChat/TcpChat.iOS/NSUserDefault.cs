@@ -16,7 +16,7 @@ namespace TcpChat.iOS
 
         public void SaveUserName(string userName)
         {
-            NSUserDefaults.StandardUserDefaults.SetString(userName, "AnyName");
+            NSUserDefaults.StandardUserDefaults.SetString(userName, PREF_NAME);
         }
 
         public void ClearName()

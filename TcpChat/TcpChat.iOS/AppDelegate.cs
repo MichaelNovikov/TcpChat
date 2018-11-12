@@ -2,6 +2,7 @@
 using Foundation;
 using Prism;
 using Prism.Ioc;
+using System;
 using UIKit;
 
 namespace TcpChat.iOS
@@ -33,35 +34,51 @@ namespace TcpChat.iOS
                 UIApplication.SharedApplication.RegisterUserNotificationSettings(notificationSettings);
             }
 
-            //if (options != null)
-            //{
-            //    // check for a local notification
-            //    if (options.ContainsKey(UIApplication.LaunchOptionsLocalNotificationKey))
-            //    {
-            //        var localNotification = options[UIApplication.LaunchOptionsLocalNotificationKey] as UILocalNotification;
-            //        if (localNotification != null)
-            //        {
-            //            UIAlertController okayAlertController = UIAlertController.Create(localNotification.AlertAction, localNotification.AlertBody, UIAlertControllerStyle.Alert);
-            //            okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+            if (options != null)
+            {
+                // check for a local notification
+                if (options.ContainsKey(UIApplication.LaunchOptionsLocalNotificationKey))
+                {
+                    var localNotification = options[UIApplication.LaunchOptionsLocalNotificationKey] as UILocalNotification;
+                    if (localNotification != null)
+                    {
+                        UIAlertController okayAlertController = UIAlertController.Create(localNotification.AlertAction, localNotification.AlertBody, UIAlertControllerStyle.Alert);
+                        okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
 
-            //            Window.RootViewController.PresentViewController(okayAlertController, true, null);
+                        Window.RootViewController.PresentViewController(okayAlertController, true, null);
 
-            //            reset our badge
-            //            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
-            //        }
-            //    }
-            //}
+                       // reset our badge
+                        UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+                    }
+                }
+            }
 
             return base.FinishedLaunching(app, options);
         }
 
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
-            //UIAlertView alert = new UIAlertView() { Title = notification.AlertAction, Message = notification.AlertBody };
-            //alert.AddButton("OK");
-            //alert.Show();
-            //// CLEAR BADGES
-            //UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+            UIAlertView alert = new UIAlertView() { Title = notification.AlertAction, Message = notification.AlertBody };
+            alert.AddButton("OK");
+            alert.Show();
+            // CLEAR BADGES
+            UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+        }
+
+        public override void DidEnterBackground(UIApplication application)
+        {
+
+            nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
+
+            //var a = 10;
+            //while (a != 0) { Thread.Sleep(1000); Method(); a--; }
+            ////runs on main or background thread
+
+
+            UIApplication.SharedApplication.EndBackgroundTask(taskID);
+
+            // Use this method to release shared resources, save user data, invalidate timers and store the application state.
+            // If your application supports background exection this method is called instead of WillTerminate when the user quits.
         }
 
         public class iOSInitializer : IPlatformInitializer

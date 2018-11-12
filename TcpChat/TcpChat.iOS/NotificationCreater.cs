@@ -25,8 +25,8 @@ namespace TcpChat.iOS
         public void CreateNotification(string message)
         {
             var notification = new UILocalNotification();
-            notification.AlertAction = message ?? "Test";
-            notification.AlertBody = "Test Text";
+            notification.AlertAction = DateTime.Now.ToShortTimeString();
+            notification.AlertBody = message;
             notification.ApplicationIconBadgeNumber = 1;
             notification.SoundName = UILocalNotification.DefaultSoundName;
             UIApplication.SharedApplication.ScheduleLocalNotification(notification);

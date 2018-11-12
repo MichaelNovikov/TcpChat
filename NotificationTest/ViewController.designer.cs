@@ -18,6 +18,10 @@ namespace NotificationTest
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton btnNotification { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField TextFild { get; set; }
+
         [Action ("BtnNotification_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void BtnNotification_TouchUpInside (UIKit.UIButton sender);
@@ -27,6 +31,11 @@ namespace NotificationTest
             if (btnNotification != null) {
                 btnNotification.Dispose ();
                 btnNotification = null;
+            }
+
+            if (TextFild != null) {
+                TextFild.Dispose ();
+                TextFild = null;
             }
         }
     }
